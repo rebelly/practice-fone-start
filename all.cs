@@ -26,23 +26,42 @@ namespace ConsoleApp1
             x = 0;
             y = 0;
         }
-        public int square_width()
+        public int square_width
         {
-            return h * sh;
+           get { return h* sh; }
         }
-        public int square_base()
+        public int square_base
         {
-            return h * g;
+            get { return h * g; } 
         }
-        public int square_depth()
+        public int square_depth
         {
-            return sh * g;
+            get { return sh * g; }
         }
-        public int vol()
+        public int vol
         {
-            return h * sh * g;
+            get { return h * sh * g; }
         }
-        public void  move_x(int step_x)
+        public int diag
+        {
+            get { return (int)Math.Round(Math.Sqrt(h * h + sh * sh + g*g), 3); }
+        }
+        public int per
+        {
+            get { return 4 * (sh+g+h); }
+        }
+        public int rad
+        {
+            get { return (int)Math.Round(Math.Sqrt(h * h + sh * sh + g * g), 3) / 2; }
+        }
+        public int square
+        {
+            get
+            {
+                return 2 * (sh * h + sh * g + h * g);
+            }
+        }
+        public void move_x(int step_x)
         {
             this.x += step_x;
         }
@@ -66,7 +85,38 @@ namespace ConsoleApp1
         {
             return $"Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}";
         }
-
+        public int Depth
+        {
+            set { if (value > 0) g = value;
+                else Console.WriteLine("Глубина должна быть больше 0");
+            }
+            get { return g; }
+        }
+        public int Height
+        {
+            set
+            {
+                if (value > sh + h) h = value;
+                else Console.WriteLine("Высота должна быть больше чем сумма глубины и ширины");
+            }
+            get { return h; }
+        }
+        public int Width
+        {
+            set
+            {
+                if (value > g && value < h) sh = value;
+                else Console.WriteLine("Ширина должна быть больше глубины, но меньше высоты");
+            }
+            get { return sh; }
+        }
+        public bool iscube
+        {
+            get
+            {
+                return sh == g && g == h;
+            }
+        }
     }
     class Program
     {
@@ -75,24 +125,25 @@ namespace ConsoleApp1
             Console.WriteLine("Введите 0, если хотите вручную заполнить класс и введите любой другой символ, если хотите заполнить его данными по умолчанию ");
             rect_par rect;
             char choice = char.Parse(Console.ReadLine());
-            if (choice == 0) { 
-            Console.Write("Введите длину основания");
-            int a = int.Parse(Console.ReadLine());
-            Console.Write("\n Введите высоту паралипипида");
-            int b = int.Parse(Console.ReadLine());
-            Console.Write("\n Введите глубину паралипипида ");
-            int c = int.Parse(Console.ReadLine());
-            Console.Write("\n Введите координаты куба по Ох ");
-            int x = int.Parse(Console.ReadLine());
-            Console.Write("\n Введите координаты куба по Оу ");
-            int y = int.Parse(Console.ReadLine());  
-            rect = new rect_par(a, b, c, x, y);
+            if (choice == 0)
+            {
+                Console.Write("Введите длину основания");
+                int a = int.Parse(Console.ReadLine());
+                Console.Write("\n Введите высоту паралипипида");
+                int b = int.Parse(Console.ReadLine());
+                Console.Write("\n Введите глубину паралипипида ");
+                int c = int.Parse(Console.ReadLine());
+                Console.Write("\n Введите координаты куба по Ох ");
+                int x = int.Parse(Console.ReadLine());
+                Console.Write("\n Введите координаты куба по Оу ");
+                int y = int.Parse(Console.ReadLine());
+                rect = new rect_par(a, b, c, x, y);
             }
             else
             {
-               rect = new rect_par();
+                rect = new rect_par();
             }
-            Console.WriteLine("СПИСОК КОМАНД:"); 
+            Console.WriteLine("СПИСОК КОМАНД:");
             Console.WriteLine("Введите: 1 если хотите увидеть площадь боковых граней");
             Console.WriteLine("2 если хотите увидеть площадь передних и задних граней");
             Console.WriteLine("3 если хотите увидеть площадь оснований");
@@ -103,27 +154,31 @@ namespace ConsoleApp1
             Console.WriteLine("8 если хотите увеличить высоту паралепипида ");
             Console.WriteLine("9 если хотите увеличить длину паралепипида ");
             Console.WriteLine("10 если хотите увеличить ширину паралепипида ");
+            Console.WriteLine("11 если хотите увидеть диагональ паралепипида");
+            Console.WriteLine("12 если хотите увидеть периметр паралепипида");
+            Console.WriteLine("13 если хотите увидеть радиус шара, описанного вокруг паралепипида ");
+            Console.WriteLine("14 если хотите увидеть площадь паралепипида");
             Console.WriteLine("0, если хотите выйти из программы");
             int req = int.Parse(Console.ReadLine());
             while (req != 0)
             {
                 if (req == 1)
                 {
-                    Console.WriteLine($"Площадь боковых граней равна {rect.square_width()}");
+                    Console.WriteLine($"Площадь боковых граней равна {rect.square_width}");
                 }
                 else if (req == 3)
                 {
-                    Console.WriteLine($"Площадь  основных граней равна {rect.square_base()}");
+                    Console.WriteLine($"Площадь  основных граней равна {rect.square_base}");
 
 
                 }
                 else if (req == 2)
                 {
-                    Console.WriteLine($"Площадь  передней и задней грани равна {rect.square_depth()}");
+                    Console.WriteLine($"Площадь  передней и задней грани равна {rect.square_depth}");
                 }
                 else if (req == 4)
                 {
-                    Console.WriteLine($"Объем равен {rect.vol()}");
+                    Console.WriteLine($"Объем равен {rect.vol}");
                 }
                 else if (req == 5)
                 {
@@ -159,8 +214,24 @@ namespace ConsoleApp1
                     int change = int.Parse((Console.ReadLine()));
                     rect.width_change(change);
                 }
+                else if (req == 11)
+                {
+                    Console.WriteLine($"Длина диагонали паралепипеда: {rect.diag} ");
+                }
+                else if (req == 12)
+                {
+                    Console.WriteLine($"Полный периметр паралепипеда: {rect.per} ");
+                }
+                else if (req == 13)
+                {
+                    Console.WriteLine($"Радиус описанного вокруг паралепипеда шара:    {rect.rad} ");
+                }
+                else if (req == 14)
+                {
+                    Console.WriteLine($"Площадь паралепипида: {rect.square} ");
+                }
                 else Console.WriteLine("Неизвестная команда");
-                req =   int.Parse(Console.ReadLine());
+                req = int.Parse(Console.ReadLine());
 
 
             }

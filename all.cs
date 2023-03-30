@@ -81,9 +81,17 @@ namespace ConsoleApp1
         {
             this.g += change;
         }
-        public string length()
+        public void union (rect_par rect2){
+			int sh1;
+			int g1;
+			if (rect2.x + rect2.g < this.x + this.g && rect2.y + rect2.sh < this.y+ this.sh && rect2.x - rect2.g < this.x - this.g && rect2.y - rect2.sh ) {sh1 = rect2.sh; g1 = rect2.g;} // полностью внутри
+			if (rect.x + rect.g
+			
+			
+			}_
+        public string length
         {
-            return $"Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}";
+            get {return "Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}";}
         }
         public int Depth
         {
@@ -182,7 +190,7 @@ namespace ConsoleApp1
                 }
                 else if (req == 5)
                 {
-                    Console.WriteLine($"{rect.length()}");
+                    Console.WriteLine($"{rect.length}");
                 }
                 else if (req == 6)
                 {

@@ -28,11 +28,11 @@ namespace ConsoleApp1
         }
         public int square_width
         {
-           get { return h* sh; }
+            get { return h * sh; }
         }
         public int square_base
         {
-            get { return h * g; } 
+            get { return h * g; }
         }
         public int square_depth
         {
@@ -44,11 +44,11 @@ namespace ConsoleApp1
         }
         public int diag
         {
-            get { return (int)Math.Round(Math.Sqrt(h * h + sh * sh + g*g), 3); }
+            get { return (int)Math.Round(Math.Sqrt(h * h + sh * sh + g * g), 3); }
         }
         public int per
         {
-            get { return 4 * (sh+g+h); }
+            get { return 4 * (sh + g + h); }
         }
         public int rad
         {
@@ -77,25 +77,50 @@ namespace ConsoleApp1
         {
             this.sh += change;
         }
+        static int max(int a, int b)
+        {
+            if (a > b) return a;
+            else return b;
+        }
+        static int min(int a, int b)
+        {
+            if (a > b) return b;
+            else return a;
+        }
         public void depth_change(int change)
         {
             this.g += change;
         }
-        public void union (rect_par rect2){
-			int sh1;
-			int g1;
-			if (rect2.x + rect2.g < this.x + this.g && rect2.y + rect2.sh < this.y+ this.sh && rect2.x - rect2.g < this.x - this.g && rect2.y - rect2.sh ) {sh1 = rect2.sh; g1 = rect2.g;} // полностью внутри
-			if (rect.x + rect.g
-			
-			
-			}_
+        public void union(rect_par rect2)
+        {
+            int x1_l = this.x;
+            int y1_l = this.y- this.sh;
+            int x1_r = this.x + this.g;
+            int y1_r = this.y; // координаты точек одно прямоугольника
+            Console.WriteLine($"{x1_l} {y1_l} {x1_r} {y1_r} ");
+            int x2_l = rect2.x;
+            int y2_l = rect2.y - rect2.sh;
+            int x2_r = rect2.x + rect2.g;
+            int y2_r = rect2.y; // координаты точек второго прямоугольника
+
+            int bord_lft = rect_par.max(x1_l, x2_l);
+            int bord_rght = rect_par.min(x1_r, x2_r);
+            int bord_top = rect_par.min(y1_r, y2_r);
+            int bord_bot = rect_par.max(y1_l, y2_l); // находим пересечение 
+            Console.WriteLine($"{bord_lft} {bord_rght} {bord_bot} {bord_top} ");
+            int sh1 = bord_rght - bord_lft;
+            int g1 = bord_top - bord_bot;
+           Console.WriteLine($"Ширина пересечения равна {sh1}, глубина {g1}");
+        }
         public string length
         {
-            get {return "Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}";}
+            get { return "Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}"; }
         }
         public int Depth
         {
-            set { if (value > 0) g = value;
+            set
+            {
+                if (value > 0) g = value;
                 else Console.WriteLine("Глубина должна быть больше 0");
             }
             get { return g; }
@@ -133,11 +158,11 @@ namespace ConsoleApp1
             Console.WriteLine("Введите 0, если хотите вручную заполнить класс и введите любой другой символ, если хотите заполнить его данными по умолчанию ");
             rect_par rect;
             char choice = char.Parse(Console.ReadLine());
-            if (choice == 0)
+            if (choice == '0')
             {
-                Console.Write("Введите длину основания");
+                Console.Write("Введите длину основания ");
                 int a = int.Parse(Console.ReadLine());
-                Console.Write("\n Введите высоту паралипипида");
+                Console.Write("\n Введите высоту паралипипида ");
                 int b = int.Parse(Console.ReadLine());
                 Console.Write("\n Введите глубину паралипипида ");
                 int c = int.Parse(Console.ReadLine());
@@ -166,6 +191,7 @@ namespace ConsoleApp1
             Console.WriteLine("12 если хотите увидеть периметр паралепипида");
             Console.WriteLine("13 если хотите увидеть радиус шара, описанного вокруг паралепипида ");
             Console.WriteLine("14 если хотите увидеть площадь паралепипида");
+            Console.WriteLine("15 если хотите увидеть пересечение оснований двух паралепипидов");
             Console.WriteLine("0, если хотите выйти из программы");
             int req = int.Parse(Console.ReadLine());
             while (req != 0)
@@ -237,6 +263,12 @@ namespace ConsoleApp1
                 else if (req == 14)
                 {
                     Console.WriteLine($"Площадь паралепипида: {rect.square} ");
+                }
+                else if (req == 15)
+                {
+                    rect_par rect4 = new rect_par(0, 2, 2,6, 1);
+                    Console.WriteLine($"Площадь персекающихся оснований равна: ");
+                    rect.union(rect4);
                 }
                 else Console.WriteLine("Неизвестная команда");
                 req = int.Parse(Console.ReadLine());

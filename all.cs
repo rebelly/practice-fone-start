@@ -1,4 +1,4 @@
-using System;
+using System; // УБРАТЬ SWITCH
 
 namespace ConsoleApp1
 {
@@ -94,27 +94,27 @@ namespace ConsoleApp1
         public void union(rect_par rect2)
         {
             int x1_l = this.x;
-            int y1_l = this.y- this.sh;
+            int y1_l = this.y + this.sh;
             int x1_r = this.x + this.g;
             int y1_r = this.y; // координаты точек одно прямоугольника
-            Console.WriteLine($"{x1_l} {y1_l} {x1_r} {y1_r} ");
             int x2_l = rect2.x;
-            int y2_l = rect2.y - rect2.sh;
+            int y2_l = rect2.y + rect2.sh;
             int x2_r = rect2.x + rect2.g;
             int y2_r = rect2.y; // координаты точек второго прямоугольника
 
             int bord_lft = rect_par.max(x1_l, x2_l);
             int bord_rght = rect_par.min(x1_r, x2_r);
-            int bord_top = rect_par.min(y1_r, y2_r);
-            int bord_bot = rect_par.max(y1_l, y2_l); // находим пересечение 
-            Console.WriteLine($"{bord_lft} {bord_rght} {bord_bot} {bord_top} ");
+            int bord_top = rect_par.max(y1_r, y2_r);
+            int bord_bot = rect_par.min(y1_l, y2_l); // находим пересечение 
             int sh1 = bord_rght - bord_lft;
-            int g1 = bord_top - bord_bot;
-           Console.WriteLine($"Ширина пересечения равна {sh1}, глубина {g1}");
+            int g1 = bord_bot - bord_top;
+            if (sh1 > 0 & g1 > 0)
+                Console.WriteLine($"Ширина пересечения равна {sh1}, глубина {g1}");
+            else Console.WriteLine($"Пересечение равно нулю");
         }
         public string length
         {
-            get { return "Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}"; }
+            get { return $"Длина стороны a равна {h}, длина стороны b равна {sh}, длина стороны с равна {g}"; }
         }
         public int Depth
         {
@@ -143,6 +143,17 @@ namespace ConsoleApp1
             }
             get { return sh; }
         }
+        public static rect_par cool_rect(int x, int y, int sh, int g, int h)
+        {
+            if (x > 0 & y > 0  )
+            {
+                if (y + x < sh + g+h) return new rect_par(h,sh,g, x, y ); 
+            }
+            Console.WriteLine("Паралепипед должен находится в первой четверти, а сумма координат долнжа быть меньше суммы ширины высоты и глубины");
+            Console.WriteLine("Вызван конструктор по умолчанию");
+            return new rect_par();
+
+        }
         public bool iscube
         {
             get
@@ -170,7 +181,7 @@ namespace ConsoleApp1
                 int x = int.Parse(Console.ReadLine());
                 Console.Write("\n Введите координаты куба по Оу ");
                 int y = int.Parse(Console.ReadLine());
-                rect = new rect_par(a, b, c, x, y);
+                rect = rect_par.cool_rect(a, b, c, x, y);
             }
             else
             {
@@ -266,7 +277,7 @@ namespace ConsoleApp1
                 }
                 else if (req == 15)
                 {
-                    rect_par rect4 = new rect_par(0, 2, 2,6, 1);
+                    rect_par rect4 = new rect_par(0, 2, 2, 6, 1);
                     Console.WriteLine($"Площадь персекающихся оснований равна: ");
                     rect.union(rect4);
                 }

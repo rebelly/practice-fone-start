@@ -1,4 +1,4 @@
-using System; // УБРАТЬ SWITCH
+using System; 
 
 namespace ConsoleApp1
 {
@@ -120,7 +120,7 @@ namespace ConsoleApp1
         {
             set
             {
-                if (value > 0) g = value;
+                if (value > 0) g = value; 
                 else Console.WriteLine("Глубина должна быть больше 0");
             }
             get { return g; }
@@ -138,18 +138,19 @@ namespace ConsoleApp1
         {
             set
             {
-                if (value > g && value < h) sh = value;
-                else Console.WriteLine("Ширина должна быть больше глубины, но меньше высоты");
-            }
+                try
+                {
+                    if (value < g | value > h) throw new Exception(@"Ширина должна быть больше глубины, но меньше высоты")
+                catch (Exception ex) { sh = value; }
+                }
             get { return sh; }
         }
         public static rect_par cool_rect(int x, int y, int sh, int g, int h)
         {
-            if (x > 0 & y > 0  )
-            {
-                if (y + x < sh + g+h) return new rect_par(h,sh,g, x, y ); 
-            }
-            Console.WriteLine("Паралепипед должен находится в первой четверти, а сумма координат долнжа быть меньше суммы ширины высоты и глубины");
+                if (x > 0 & y > 0)
+                {
+                    if (y + x < sh + g + h) return new rect_par(h, sh, g, x, y);
+                }          Console.WriteLine("Паралепипед должен находится в первой четверти, а сумма координат долнжа быть меньше суммы ширины высоты и глубины");
             Console.WriteLine("Вызван конструктор по умолчанию");
             return new rect_par();
 
@@ -187,107 +188,41 @@ namespace ConsoleApp1
             {
                 rect = new rect_par();
             }
-            Console.WriteLine("СПИСОК КОМАНД:");
-            Console.WriteLine("Введите: 1 если хотите увидеть площадь боковых граней");
-            Console.WriteLine("2 если хотите увидеть площадь передних и задних граней");
-            Console.WriteLine("3 если хотите увидеть площадь оснований");
-            Console.WriteLine("4 если хотите увидеть объем паралепипеда");
-            Console.WriteLine("5 если хотите увидеть длины сторон");
-            Console.WriteLine("6 если хотите сдвинуть паралепид по Ох");
-            Console.WriteLine("7 если хотите сдвинуть паралепид по Оу");
-            Console.WriteLine("8 если хотите увеличить высоту паралепипида ");
-            Console.WriteLine("9 если хотите увеличить длину паралепипида ");
-            Console.WriteLine("10 если хотите увеличить ширину паралепипида ");
-            Console.WriteLine("11 если хотите увидеть диагональ паралепипида");
-            Console.WriteLine("12 если хотите увидеть периметр паралепипида");
-            Console.WriteLine("13 если хотите увидеть радиус шара, описанного вокруг паралепипида ");
-            Console.WriteLine("14 если хотите увидеть площадь паралепипида");
-            Console.WriteLine("15 если хотите увидеть пересечение оснований двух паралепипидов");
-            Console.WriteLine("0, если хотите выйти из программы");
-            int req = int.Parse(Console.ReadLine());
-            while (req != 0)
+          
+            Console.WriteLine("1 если хотите всячески изменить паралепипед");
+            string req = Console.ReadLine();
+            Console.WriteLine($"Площадь боковых граней равна {rect.square_width}");
+            Console.WriteLine($"Площадь  основных граней равна {rect.square_base}");
+            Console.WriteLine($"Площадь  передней и задней грани равна {rect.square_depth}");
+            Console.WriteLine($"Объем равен {rect.vol}");
+            Console.WriteLine($"{rect.length}");
+            if (req == "1")
             {
-                if (req == 1)
-                {
-                    Console.WriteLine($"Площадь боковых граней равна {rect.square_width}");
-                }
-                else if (req == 3)
-                {
-                    Console.WriteLine($"Площадь  основных граней равна {rect.square_base}");
+                Console.WriteLine("Введите на сколько сдвинуть паралепипед по оси Х");
+                int step_x = int.Parse((Console.ReadLine()));
+                rect.move_x(step_x);
+                Console.WriteLine("Введите на сколько сдвинуть паралепипед по оси Y");
+                int step_y = int.Parse((Console.ReadLine()));
+                rect.move_y(step_y);
+                Console.WriteLine("Введите на сколько увеличить высоту паралепипеда ");
+                int change = int.Parse((Console.ReadLine()));
+                rect.height_change(change);
+                Console.WriteLine("Введите на сколько увеличить длину паралепипеда ");
+                int change1 = int.Parse((Console.ReadLine()));
+                rect.depth_change(change1);
+                Console.WriteLine("Введите  на сколько увеличить ширину паралепипеда ");
+                int change2 = int.Parse((Console.ReadLine()));
+                rect.width_change(change2);
+                Console.WriteLine($"Длина диагонали паралепипеда: {rect.diag} ");
+                Console.WriteLine($"Полный периметр паралепипеда: {rect.per} ");
+                Console.WriteLine($"Радиус описанного вокруг паралепипеда шара:    {rect.rad} ");
 
+                Console.WriteLine($"Площадь паралепипида: {rect.square} ");
 
-                }
-                else if (req == 2)
-                {
-                    Console.WriteLine($"Площадь  передней и задней грани равна {rect.square_depth}");
-                }
-                else if (req == 4)
-                {
-                    Console.WriteLine($"Объем равен {rect.vol}");
-                }
-                else if (req == 5)
-                {
-                    Console.WriteLine($"{rect.length}");
-                }
-                else if (req == 6)
-                {
-                    Console.WriteLine("Введите на сколько сдвинуть паралепипед по оси Х");
-                    int step_x = int.Parse((Console.ReadLine()));
-                    rect.move_x(step_x);
-                }
-                else if (req == 7)
-                {
-                    Console.WriteLine("Введите на сколько сдвинуть паралепипед по оси Y");
-                    int step_y = int.Parse((Console.ReadLine()));
-                    rect.move_y(step_y);
-                }
-                else if (req == 8)
-                {
-                    Console.WriteLine("Введите на сколько увеличить высоту паралепипеда ");
-                    int change = int.Parse((Console.ReadLine()));
-                    rect.height_change(change);
-                }
-                else if (req == 9)
-                {
-                    Console.WriteLine("Введите на сколько увеличить длину паралепипеда ");
-                    int change = int.Parse((Console.ReadLine()));
-                    rect.depth_change(change);
-                }
-                else if (req == 10)
-                {
-                    Console.WriteLine("Введите  на сколько увеличить ширину паралепипеда ");
-                    int change = int.Parse((Console.ReadLine()));
-                    rect.width_change(change);
-                }
-                else if (req == 11)
-                {
-                    Console.WriteLine($"Длина диагонали паралепипеда: {rect.diag} ");
-                }
-                else if (req == 12)
-                {
-                    Console.WriteLine($"Полный периметр паралепипеда: {rect.per} ");
-                }
-                else if (req == 13)
-                {
-                    Console.WriteLine($"Радиус описанного вокруг паралепипеда шара:    {rect.rad} ");
-                }
-                else if (req == 14)
-                {
-                    Console.WriteLine($"Площадь паралепипида: {rect.square} ");
-                }
-                else if (req == 15)
-                {
-                    rect_par rect4 = new rect_par(0, 2, 2, 6, 1);
-                    Console.WriteLine($"Площадь персекающихся оснований равна: ");
-                    rect.union(rect4);
-                }
-                else Console.WriteLine("Неизвестная команда");
-                req = int.Parse(Console.ReadLine());
-
-
+                rect_par rect4 = new rect_par(0, 2, 2, 6, 1);
+                Console.WriteLine($"Площадь персекающихся оснований равна: ");
+                rect.union(rect4);
             }
-
-
         }
     }
 }
